@@ -3,173 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>RRI.Online By.Bajakeras</title>
-
+  <title>RRI Pro 1 Mataram</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- BINTANG -->
-  <div class="stars"></div>
+  <main class="radio-container">
 
-  <main class="radio">
-
-    <!-- HEADER -->
     <header>
-      <div class="logo">
-        RRI<span>.Online</span>
-      </div>
-
-      <div class="by">
-        By.Bajakeras
-      </div>
+      <div class="logo">RRI</div>
+      <div class="title">RADIO ONLINE</div>
     </header>
 
+    <section class="radio-info">
 
-    <!-- BULAN -->
-    <div class="moon">
-      <div class="moon-shadow"></div>
+      <div class="live">LIVE</div>
+
+      <h1>RRI</h1>
+
+      <p>Radio Republik Indonesia</p>
+
+      <h2>Pro 1</h2>
+
+      <h3>Mataram</h3>
+
+      <div class="location">
+        📍 Mataram, Nusa Tenggara Barat
+      </div>
+
+    </section>
+
+
+    <div id="status">
+      Siap diputar
     </div>
 
 
-    <!-- PLAYER -->
-    <section class="player">
-
-      <div class="live">
-        <span></span>
-        LIVE RADIO
-      </div>
-
-      <h1>Pro 1 Mataram</h1>
-
-      <p class="location">
-        📍 Mataram, Nusa Tenggara Barat
-      </p>
+    <button id="playButton">
+      ▶
+    </button>
 
 
-      <!-- PLAY BUTTON -->
-      <button
-        id="playButton"
-        class="play-button"
-        aria-label="Putar radio"
-      >
-        <span id="playIcon">▶</span>
-      </button>
-
-
-      <div id="statusText" class="status">
-        Siap diputar
-      </div>
-
-    </section>
-
-
-    <!-- SPECTRUM -->
-    <section class="panel">
-
-      <div class="panel-title">
-        <span>LIVE SPECTRUM</span>
-        <span id="spectrumStatus">● READY</span>
-      </div>
-
-      <canvas id="spectrum"></canvas>
-
-    </section>
-
-
-    <!-- EQUALIZER -->
-    <section class="panel">
-
-      <div class="panel-title">
-        <span>10-BAND EQUALIZER</span>
-
-        <button id="resetEQ" class="reset">
-          RESET
-        </button>
-      </div>
-
-
-      <div class="eq">
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="0">
-          <span>31</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="1">
-          <span>62</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="2">
-          <span>125</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="3">
-          <span>250</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="4">
-          <span>500</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="5">
-          <span>1K</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="6">
-          <span>2K</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="7">
-          <span>4K</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="8">
-          <span>8K</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-        <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="9">
-          <span>16K</span>
-          <small>Hz</small>
-          <b>0</b>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- VOLUME -->
-    <section class="volume">
+    <div class="volume-control">
 
       <span id="volumeIcon">🔊</span>
 
@@ -183,25 +59,78 @@
 
       <span id="volumeValue">85%</span>
 
+    </div>
+
+
+    <button id="muteButton">
+      🔇
+    </button>
+
+
+    <section class="sound-control">
+
+      <h3>SOUND CONTROL</h3>
+
+      <h2>Equalizer</h2>
+
+
+      <label>
+        BASS
+        <span id="bassValue">0 dB</span>
+      </label>
+
+      <input
+        id="bass"
+        type="range"
+        min="-12"
+        max="12"
+        value="0"
+      >
+
+
+      <label>
+        MID
+        <span id="midValue">0 dB</span>
+      </label>
+
+      <input
+        id="mid"
+        type="range"
+        min="-12"
+        max="12"
+        value="0"
+      >
+
+
+      <label>
+        TREBLE
+        <span id="trebleValue">0 dB</span>
+      </label>
+
+      <input
+        id="treble"
+        type="range"
+        min="-12"
+        max="12"
+        value="0"
+      >
+
+
+      <p>
+        Equalizer 3-band untuk mengatur karakter suara radio.
+      </p>
+
     </section>
 
 
-    <!-- AUDIO -->
-    <audio
-      id="radioAudio"
-      preload="none"
-      crossorigin="anonymous"
-    ></audio>
-
-
-    <!-- FOOTER -->
     <footer>
-      <strong>RRI.Online By.Bajakeras</strong>
-      <small>LIVE RADIO STREAM</small>
+      RRI Pro 1 Mataram
     </footer>
 
   </main>
 
+
+  <audio id="radioAudio" preload="none"></audio>
 
   <script src="script.js"></script>
 
