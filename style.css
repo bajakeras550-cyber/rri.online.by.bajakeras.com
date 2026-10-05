@@ -1,564 +1,168 @@
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {
+  margin: 0;
   min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   color: white;
   background:
-    radial-gradient(circle at 50% 10%, #18264a 0%, #080d1d 45%, #03050c 100%);
-  overflow-x: hidden;
+    radial-gradient(circle at top, #17254a, #070b18 60%, #02030a);
+  display: flex;
+  justify-content: center;
 }
 
-
-/* =========================
-   STARS
-========================= */
-
-.stars,
-.stars::before,
-.stars::after {
-  position: fixed;
-  inset: 0;
-  content: "";
-  pointer-events: none;
+.radio-container {
+  width: 100%;
+  max-width: 650px;
+  padding: 35px 20px;
+  text-align: center;
 }
-
-.stars {
-  background-image:
-    radial-gradient(circle, white 1px, transparent 1px),
-    radial-gradient(circle, #ffe36b 1px, transparent 1px),
-    radial-gradient(circle, white 1px, transparent 1px);
-
-  background-size:
-    100px 100px,
-    150px 150px,
-    220px 220px;
-
-  background-position:
-    10px 20px,
-    40px 80px,
-    100px 40px;
-
-  opacity: .55;
-}
-
-
-/* =========================
-   MAIN
-========================= */
-
-.radio {
-  position: relative;
-  width: min(950px, 94%);
-  margin: auto;
-  padding: 35px 0 50px;
-}
-
-
-/* =========================
-   HEADER
-========================= */
 
 header {
-  text-align: center;
-  position: relative;
-  z-index: 2;
+  margin-bottom: 35px;
 }
 
 .logo {
-  font-size: clamp(28px, 6vw, 48px);
-  font-weight: 900;
-  letter-spacing: 2px;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffcc00;
 }
 
-.logo span {
-  color: #ffd21f;
+.title {
+  font-size: 22px;
+  letter-spacing: 5px;
 }
 
-.by {
-  margin-top: 4px;
-  color: #ffd21f;
-  font-size: 14px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
-
-/* =========================
-   MOON
-========================= */
-
-.moon {
-  position: absolute;
-  top: 30px;
-  right: 7%;
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
-  background: #fff7c2;
-  box-shadow:
-    0 0 20px rgba(255, 247, 194, .5),
-    0 0 70px rgba(255, 247, 194, .18);
-  overflow: hidden;
-}
-
-.moon-shadow {
-  position: absolute;
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
-  background: #0a1022;
-  left: 25px;
-  top: -12px;
-}
-
-
-/* =========================
-   PLAYER
-========================= */
-
-.player {
-  text-align: center;
-  margin-top: 90px;
+.radio-info {
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.06);
 }
 
 .live {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 15px;
-  border-radius: 30px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  color: #ffd21f;
+  display: inline-block;
+  padding: 6px 15px;
+  border-radius: 20px;
+  background: #e53935;
   font-size: 12px;
   font-weight: bold;
 }
 
-.live span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ff3b30;
-  box-shadow: 0 0 12px #ff3b30;
+.radio-info h1 {
+  margin: 20px 0 5px;
+  font-size: 35px;
 }
 
-.player h1 {
-  margin-top: 16px;
-  font-size: clamp(24px, 5vw, 38px);
+.radio-info p {
+  color: #aaa;
+}
+
+.radio-info h2 {
+  margin-bottom: 5px;
+}
+
+.radio-info h3 {
+  margin-top: 5px;
+  color: #ffcc00;
 }
 
 .location {
-  margin-top: 7px;
-  color: #aab4ce;
+  margin-top: 15px;
+  color: #aaa;
 }
 
+#status {
+  margin: 25px 0 15px;
+  color: #aaa;
+}
 
-/* =========================
-   PLAY BUTTON
-========================= */
-
-.play-button {
-  position: relative;
-
-  width: 120px;
-  height: 120px;
-
-  margin-top: 35px;
-
+#playButton {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-
-  border: 5px solid #ffe05a;
-
-  background: #ffd21f;
-
+  border: none;
+  background: #ffcc00;
   color: #111;
-
-  font-size: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  font-size: 32px;
   cursor: pointer;
-
-  box-shadow:
-    0 0 20px rgba(255,210,31,.9),
-    0 0 50px rgba(255,210,31,.45),
-    0 0 100px rgba(255,210,31,.15);
-
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease;
+  box-shadow: 0 0 25px rgba(255,204,0,.5);
 }
 
-.play-button:hover {
-  transform: scale(1.07);
-
-  box-shadow:
-    0 0 30px rgba(255,210,31,1),
-    0 0 70px rgba(255,210,31,.65),
-    0 0 120px rgba(255,210,31,.25);
-}
-
-.play-button:active {
+#playButton:active {
   transform: scale(.94);
 }
 
-.play-button.playing {
-  background: #ffe45e;
-}
-
-.status {
-  margin-top: 15px;
-  color: #9ba6c0;
-  font-size: 14px;
-}
-
-
-/* =========================
-   PANELS
-========================= */
-
-.panel {
-  margin-top: 35px;
-
-  padding: 20px;
-
-  border-radius: 22px;
-
-  background: rgba(10,17,38,.72);
-
-  border: 1px solid rgba(255,255,255,.08);
-
-  box-shadow:
-    0 15px 50px rgba(0,0,0,.25);
-
-  backdrop-filter: blur(12px);
-}
-
-.panel-title {
+.volume-control {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 15px;
-
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-
-  color: #dbe2f4;
+  gap: 12px;
+  margin: 25px auto 10px;
+  max-width: 400px;
 }
 
-#spectrumStatus {
-  color: #ffd21f;
-  font-size: 11px;
-}
-
-
-/* =========================
-   SPECTRUM
-========================= */
-
-#spectrum {
-  display: block;
-  width: 100%;
-  height: 230px;
-
-  border-radius: 15px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.025),
-      rgba(0,0,0,.12)
-    );
-}
-
-
-/* =========================
-   RESET
-========================= */
-
-.reset {
-  border: 1px solid rgba(255,210,31,.35);
-
-  background: rgba(255,210,31,.08);
-
-  color: #ffd21f;
-
-  border-radius: 10px;
-
-  padding: 7px 12px;
-
-  cursor: pointer;
-}
-
-
-/* =========================
-   EQUALIZER
-========================= */
-
-.eq {
-  display: grid;
-
-  grid-template-columns: repeat(10, 1fr);
-
-  gap: 10px;
-
-  align-items: end;
-
-  min-height: 280px;
-}
-
-.eq-band {
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: end;
-
-  gap: 6px;
-}
-
-.eq-band span {
-  font-size: 11px;
-  color: #dce4fa;
-  white-space: nowrap;
-}
-
-.eq-band small {
-  font-size: 9px;
-  color: #737f9d;
-}
-
-.eq-band b {
-  min-height: 15px;
-
-  font-size: 10px;
-
-  color: #ffd21f;
-}
-
-
-/*
-  VERTICAL RANGE YANG LEBIH AMAN
-  DARIPADA rotate()
-*/
-
-.eq-band input[type="range"] {
-  width: 18px;
-  height: 190px;
-
-  writing-mode: vertical-lr;
-
-  direction: rtl;
-
-  appearance: none;
-  -webkit-appearance: none;
-
-  background: transparent;
-
-  cursor: pointer;
-}
-
-
-/* TRACK */
-
-.eq-band input[type="range"]::-webkit-slider-runnable-track {
-  width: 7px;
-  height: 180px;
-
-  border-radius: 10px;
-
-  background: #202943;
-}
-
-.eq-band input[type="range"]::-moz-range-track {
-  width: 7px;
-  height: 180px;
-
-  border-radius: 10px;
-
-  background: #202943;
-}
-
-
-/* THUMB */
-
-.eq-band input[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-
-  width: 19px;
-  height: 19px;
-
-  border-radius: 50%;
-
-  border: 3px solid #fff1a0;
-
-  background: #ffd21f;
-
-  box-shadow:
-    0 0 10px rgba(255,210,31,.8);
-
-  margin-left: -6px;
-}
-
-.eq-band input[type="range"]::-moz-range-thumb {
-  width: 19px;
-  height: 19px;
-
-  border-radius: 50%;
-
-  border: 3px solid #fff1a0;
-
-  background: #ffd21f;
-
-  box-shadow:
-    0 0 10px rgba(255,210,31,.8);
-}
-
-
-/* =========================
-   VOLUME
-========================= */
-
-.volume {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  width: min(600px, 100%);
-
-  margin: 25px auto 0;
-
-  padding: 14px 18px;
-
-  border-radius: 15px;
-
-  background: rgba(255,255,255,.045);
-}
-
-.volume input {
+#volumeSlider {
   flex: 1;
-}
-
-.volume input[type="range"] {
-  accent-color: #ffd21f;
-  cursor: pointer;
+  accent-color: #ffcc00;
 }
 
 #volumeValue {
   width: 45px;
-
-  color: #ffd21f;
-
-  font-weight: bold;
-
-  font-size: 13px;
+  color: #ffcc00;
 }
 
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-  text-align: center;
-
-  margin-top: 40px;
-
-  color: #7f8ba8;
+#muteButton {
+  margin: 5px;
+  padding: 8px 15px;
+  border: 1px solid #444;
+  border-radius: 10px;
+  background: #151a2b;
+  color: white;
+  cursor: pointer;
 }
 
-footer strong {
-  display: block;
-
-  color: #ffd21f;
-
-  font-size: 14px;
+.sound-control {
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.06);
 }
 
-footer small {
-  display: block;
-
-  margin-top: 6px;
-
-  font-size: 9px;
-
+.sound-control h3 {
+  color: #ffcc00;
   letter-spacing: 2px;
 }
 
+.sound-control h2 {
+  margin-bottom: 30px;
+}
 
-/* =========================
-   MOBILE
-========================= */
+.sound-control label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #ddd;
+}
 
-@media (max-width: 650px) {
+.sound-control label span {
+  color: #ffcc00;
+}
 
-  .radio {
-    width: 94%;
-    padding-top: 25px;
-  }
+.sound-control input {
+  width: 100%;
+  accent-color: #ffcc00;
+}
 
-  .moon {
-    width: 60px;
-    height: 60px;
+.sound-control p {
+  margin-top: 25px;
+  color: #888;
+  font-size: 13px;
+}
 
-    top: 25px;
-    right: 3%;
-  }
-
-  .moon-shadow {
-    width: 60px;
-    height: 60px;
-  }
-
-  .player {
-    margin-top: 85px;
-  }
-
-  .play-button {
-    width: 105px;
-    height: 105px;
-    font-size: 35px;
-  }
-
-  .panel {
-    padding: 14px;
-    border-radius: 17px;
-  }
-
-  .eq {
-    gap: 2px;
-    min-height: 250px;
-  }
-
-  .eq-band input[type="range"] {
-    height: 160px;
-  }
-
-  .eq-band input[type="range"]::-webkit-slider-runnable-track {
-    height: 150px;
-  }
-
-  .eq-band span {
-    font-size: 9px;
-  }
-
-  .eq-band small {
-    font-size: 7px;
-  }
-
-  #spectrum {
-    height: 190px;
-  }
-    }
+footer {
+  margin-top: 35px;
+  color: #777;
+  font-size: 13px;
+}
