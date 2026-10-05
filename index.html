@@ -4,224 +4,159 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>RRI Pro 1 Mataram</title>
+  <title>RRI.Online By.Bajakeras</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="container">
+  <div class="stars"></div>
+
+  <main class="radio-container">
 
     <!-- HEADER -->
-    <header>
-      <div class="logo">RRI</div>
-
-      <div class="title">
-        <small>RADIO ONLINE</small>
-        <h1>Pro 1 Mataram</h1>
-      </div>
-
-      <div class="live">
-        <span></span> LIVE
+    <header class="header">
+      <div class="brand">
+        <div class="brand-main">RRI<span>.Online</span></div>
+        <div class="brand-sub">By.Bajakeras</div>
       </div>
     </header>
 
+    <!-- MOON -->
+    <div class="moon">
+      <div class="moon-shadow"></div>
+    </div>
 
-    <!-- RADIO -->
-    <section class="radio">
+    <!-- PLAY AREA -->
+    <section class="player-section">
 
-      <div class="cover">
-        <div class="cover-inner">
-          RRI
-        </div>
-      </div>
+      <div class="play-glow"></div>
 
-      <div class="info">
-
-        <p>Radio Republik Indonesia</p>
-
-        <h2>Pro 1<br>Mataram</h2>
-
-        <div class="location">
-          📍 Mataram, Nusa Tenggara Barat
-        </div>
-
-        <div class="status">
-          <span></span>
-          <b id="statusText">Siap diputar</b>
-        </div>
-
-        <!-- VISUALIZER -->
-        <div class="visualizer">
-          <i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- PLAYER -->
-    <section class="player">
-
-      <audio id="radioAudio"></audio>
-
-      <button
-        id="playButton"
-        class="play"
-        onclick="toggleRadio()">
-        ▶
+      <button id="playButton" class="play-button" aria-label="Putar radio">
+        <span id="playIcon">▶</span>
       </button>
 
-      <div class="volume">
-
-        <span>🔊</span>
-
-        <input
-          id="volume"
-          type="range"
-          min="0"
-          max="100"
-          value="85"
-          oninput="changeVolume()">
-
-        <span id="volumeText">85%</span>
-
-      </div>
-
-      <button
-        class="mute"
-        onclick="toggleMute()">
-        🔇
-      </button>
-
-    </section>
-
-
-    <!-- EQUALIZER -->
-    <section class="equalizer">
-
-      <div class="eq-header">
-
-        <div>
-          <small>SOUND CONTROL</small>
-          <h3>Equalizer</h3>
-        </div>
-
-        <select id="preset" onchange="changePreset()">
-
-          <option value="flat">
-            Flat
-          </option>
-
-          <option value="bass">
-            Bass Boost
-          </option>
-
-          <option value="vocal">
-            Vocal
-          </option>
-
-          <option value="treble">
-            Treble
-          </option>
-
-          <option value="radio">
-            Radio
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- BASS -->
-      <div class="eq-control">
-
-        <div class="eq-name">
-          <b>BASS</b>
-          <span id="bassValue">0 dB</span>
-        </div>
-
-        <input
-          id="bass"
-          type="range"
-          min="-12"
-          max="12"
-          value="0"
-          oninput="updateEQ()">
-
-      </div>
-
-
-      <!-- MID -->
-      <div class="eq-control">
-
-        <div class="eq-name">
-          <b>MID</b>
-          <span id="midValue">0 dB</span>
-        </div>
-
-        <input
-          id="mid"
-          type="range"
-          min="-12"
-          max="12"
-          value="0"
-          oninput="updateEQ()">
-
-      </div>
-
-
-      <!-- TREBLE -->
-      <div class="eq-control">
-
-        <div class="eq-name">
-          <b>TREBLE</b>
-          <span id="trebleValue">0 dB</span>
-        </div>
-
-        <input
-          id="treble"
-          type="range"
-          min="-12"
-          max="12"
-          value="0"
-          oninput="updateEQ()">
-
-      </div>
-
-
-      <div class="eq-info">
-        Equalizer 3-band untuk mengatur karakter suara radio.
+      <div id="statusText" class="status">
+        Siap mendengarkan
       </div>
 
     </section>
 
+    <!-- SPECTRUM -->
+    <section class="spectrum-section">
 
-    <!-- FOOTER -->
+      <div class="section-title">
+        <span>LIVE SPECTRUM</span>
+        <span id="liveIndicator" class="live-indicator">● LIVE</span>
+      </div>
+
+      <canvas id="spectrumCanvas"></canvas>
+
+    </section>
+
+    <!-- 10 BAND EQUALIZER -->
+    <section class="equalizer-section">
+
+      <div class="section-title">
+        <span>10-BAND EQUALIZER</span>
+        <button id="resetEq" class="reset-button">RESET</button>
+      </div>
+
+      <div class="equalizer">
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="31">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">31</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="62">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">62</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="125">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">125</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="250">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">250</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="500">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">500</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="1000">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">1K</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="2000">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">2K</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="4000">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">4K</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="8000">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">8K</div>
+        </div>
+
+        <div class="eq-band">
+          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="16000">
+          <div class="eq-value">0 dB</div>
+          <div class="eq-frequency">16K</div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VOLUME -->
+    <section class="volume-section">
+
+      <div class="volume-icon" id="volumeIcon">🔊</div>
+
+      <input
+        id="volumeSlider"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="1"
+      >
+
+      <span id="volumeValue">100%</span>
+
+    </section>
+
+    <audio id="radioAudio" preload="none"></audio>
+
     <footer>
-
-      <span>RRI Pro 1 Mataram</span>
-
-      <span>•</span>
-
-      <a
-        href="https://www.rri.co.id/"
-        target="_blank">
-        Situs RRI
-      </a>
-
+      <div>RRI.Online By.Bajakeras</div>
+      <small>LIVE RADIO STREAM</small>
     </footer>
 
-  </div>
-
+  </main>
 
   <script src="script.js"></script>
 
 </body>
-    </html>
+</html>
