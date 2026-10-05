@@ -1,57 +1,56 @@
 /* =====================================================
    RRI.ONLINE BY.BAJAKERAS
-   RADIO PLAYER + 10 BAND EQ + REAL-TIME SPECTRUM
-===================================================== */
+   ===================================================== */
 
 
 /* =====================================================
-   STREAM RRI
-===================================================== */
+   1. MASUKKAN STREAM RRI LAMA DI SINI
+   ===================================================== */
 
-// MASUKKAN URL STREAM RRI YANG KAMU PAKAI DI SINI
-
-const STREAM_URL = "ISI_URL_STREAM_RRI_KAMU_DI_SINI";
+const STREAM_URL = "MASUKKAN_URL_STREAM_RRI_LAMA_DI_SINI";
 
 
 /* =====================================================
    ELEMENT
-===================================================== */
+   ===================================================== */
 
 const audio = document.getElementById("radioAudio");
+
 const playButton = document.getElementById("playButton");
 const playIcon = document.getElementById("playIcon");
+
 const statusText = document.getElementById("statusText");
 
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeValue = document.getElementById("volumeValue");
 const volumeIcon = document.getElementById("volumeIcon");
 
-const resetEq = document.getElementById("resetEq");
+const resetEQ = document.getElementById("resetEQ");
 
-const eqSliders = document.querySelectorAll(".eq-slider");
+const spectrumCanvas = document.getElementById("spectrum");
+const spectrumStatus = document.getElementById("spectrumStatus");
 
-const canvas = document.getElementById("spectrumCanvas");
-const canvasContext = canvas.getContext("2d");
+const eqSliders = document.querySelectorAll(
+  '.eq-band input[type="range"]'
+);
 
 
 /* =====================================================
-   AUDIO CONTEXT
-===================================================== */
+   AUDIO VARIABLES
+   ===================================================== */
 
 let audioContext = null;
+
 let sourceNode = null;
+
 let analyser = null;
 
-let eqFilters = [];
+let filters = [];
 
 let audioReady = false;
-let isMuted = false;
-let previousVolume = 1;
 
 
-/* =====================================================
-   EQUALIZER FREQUENCIES
-===================================================== */
+/* 10 BAND */
 
 const frequencies = [
   31,
@@ -68,401 +67,30 @@ const frequencies = [
 
 
 /* =====================================================
-   INITIALIZE AUDIO
-===================================================== */
+   CANVAS
+   ===================================================== */
 
-function initializeAudio() {
+const canvasContext = spectrumCanvas.getContext("2d");
 
-  if (audioReady) {
-    return;
-  }
-
-  try {
-
-    audioContext =
-      new (
-        window.AudioContext ||
-        window.webkitAudioContext
-      )();
-
-    /*
-      Mengambil audio dari HTMLAudioElement.
-    */
-
-    sourceNode =
-      audioContext.createMediaElementSource(audio);
-
-
-    /*
-      Buat 10 filter equalizer.
-    */
-
-    eqFilters = frequencies.map((frequency) => {
-
-      const filter =
-        audioContext.createBiquadFilter();
-
-      filter.type = "peaking";
-
-      filter.frequency.value = frequency;
-
-      filter.Q.value = 1.1;
-
-      filter.gain.value = 0;
-
-      return filter;
-
-    });
-
-
-    /*
-      Hubungkan filter satu per satu.
-    */
-
-    let previousNode = sourceNode;
-
-    eqFilters.forEach((filter) => {
-
-      previousNode.connect(filter);
-
-      previousNode = filter;
-
-    });
-
-
-    /*
-      Analyzer untuk spectrum.
-    */
-
-    analyser =
-      audioContext.createAnalyser();
-
-    analyser.fftSize = 2048;
-
-    analyser.smoothingTimeConstant = 0.82;
-
-    analyser.minDecibels = -90;
-
-    analyser.maxDecibels = -10;
-
-
-    previousNode.connect(analyser);
-
-    analyser.connect(
-      audioContext.destination
-    );
-
-
-    audioReady = true;
-
-  } catch (error) {
-
-    console.error(
-      "Audio initialization error:",
-      error
-    );
-
-    statusText.textContent =
-      "Audio browser tidak mendukung";
-
-  }
-
-}
-
-
-/* =====================================================
-   PLAY / PAUSE
-===================================================== */
-
-playButton.addEventListener("click", async () => {
-
-  if (!STREAM_URL ||
-      STREAM_URL === "ISI_URL_STREAM_RRI_KAMU_DI_SINI") {
-
-    statusText.textContent =
-      "Masukkan URL stream RRI terlebih dahulu.";
-
-    return;
-  }
-
-
-  initializeAudio();
-
-
-  try {
-
-    if (audioContext.state === "suspended") {
-      await audioContext.resume();
-    }
-
-
-    if (audio.paused) {
-
-      /*
-        URL hanya dimasukkan saat tombol Play ditekan.
-      */
-
-      if (!audio.src) {
-
-        audio.src = STREAM_URL;
-
-      }
-
-      statusText.textContent =
-        "Menghubungkan ke RRI...";
-
-      await audio.play();
-
-    } else {
-
-      audio.pause();
-
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    statusText.textContent =
-      "Gagal memutar stream.";
-
-  }
-
-});
-
-
-/* =====================================================
-   AUDIO EVENTS
-===================================================== */
-
-audio.addEventListener("playing", () => {
-
-  playIcon.textContent = "❚❚";
-
-  statusText.textContent =
-    "RRI sedang mengudara";
-
-  document.body.classList.add("playing");
-
-});
-
-
-audio.addEventListener("pause", () => {
-
-  playIcon.textContent = "▶";
-
-  statusText.textContent =
-    "Radio dijeda";
-
-  document.body.classList.remove("playing");
-
-});
-
-
-audio.addEventListener("waiting", () => {
-
-  statusText.textContent =
-    "Buffering...";
-
-});
-
-
-audio.addEventListener("stalled", () => {
-
-  statusText.textContent =
-    "Koneksi stream terhenti...";
-
-});
-
-
-audio.addEventListener("error", () => {
-
-  console.error(
-    "Radio stream error:",
-    audio.error
-  );
-
-  statusText.textContent =
-    "Stream RRI tidak dapat diputar.";
-
-});
-
-
-/* =====================================================
-   VOLUME
-===================================================== */
-
-audio.volume = 1;
-
-volumeSlider.addEventListener("input", () => {
-
-  const value =
-    Number(volumeSlider.value);
-
-  audio.volume = value;
-
-  previousVolume = value;
-
-  isMuted = value === 0;
-
-  volumeValue.textContent =
-    Math.round(value * 100) + "%";
-
-  updateVolumeIcon();
-
-});
-
-
-function updateVolumeIcon() {
-
-  if (audio.volume === 0) {
-
-    volumeIcon.textContent = "🔇";
-
-  } else if (audio.volume < .45) {
-
-    volumeIcon.textContent = "🔈";
-
-  } else {
-
-    volumeIcon.textContent = "🔊";
-
-  }
-
-}
-
-
-volumeIcon.addEventListener("click", () => {
-
-  if (!isMuted) {
-
-    previousVolume =
-      audio.volume || 1;
-
-    audio.volume = 0;
-
-    volumeSlider.value = 0;
-
-    isMuted = true;
-
-  } else {
-
-    audio.volume =
-      previousVolume || 1;
-
-    volumeSlider.value =
-      audio.volume;
-
-    isMuted = false;
-
-  }
-
-  volumeValue.textContent =
-    Math.round(audio.volume * 100) + "%";
-
-  updateVolumeIcon();
-
-});
-
-
-/* =====================================================
-   10 BAND EQUALIZER
-===================================================== */
-
-eqSliders.forEach((slider, index) => {
-
-  slider.addEventListener("input", () => {
-
-    const value =
-      Number(slider.value);
-
-    const valueDisplay =
-      slider.parentElement.querySelector(
-        ".eq-value"
-      );
-
-    valueDisplay.textContent =
-      (value > 0 ? "+" : "") +
-      value +
-      " dB";
-
-
-    if (
-      eqFilters[index]
-    ) {
-
-      eqFilters[index].gain.value =
-        value;
-
-    }
-
-  });
-
-});
-
-
-/* =====================================================
-   RESET EQUALIZER
-===================================================== */
-
-resetEq.addEventListener("click", () => {
-
-  eqSliders.forEach(
-    (slider, index) => {
-
-      slider.value = 0;
-
-      const valueDisplay =
-        slider.parentElement.querySelector(
-          ".eq-value"
-        );
-
-      valueDisplay.textContent =
-        "0 dB";
-
-
-      if (
-        eqFilters[index]
-      ) {
-
-        eqFilters[index].gain.value =
-          0;
-
-      }
-
-    }
-  );
-
-});
-
-
-/* =====================================================
-   CANVAS RESIZE
-===================================================== */
 
 function resizeCanvas() {
 
-  const pixelRatio =
-    window.devicePixelRatio || 1;
+  const rect = spectrumCanvas.getBoundingClientRect();
 
-  const rect =
-    canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
 
-  canvas.width =
-    rect.width * pixelRatio;
+  spectrumCanvas.width = rect.width * dpr;
 
-  canvas.height =
-    rect.height * pixelRatio;
+  spectrumCanvas.height = rect.height * dpr;
 
   canvasContext.setTransform(
-    pixelRatio,
+    dpr,
     0,
     0,
-    pixelRatio,
+    dpr,
     0,
     0
   );
-
 }
 
 
@@ -475,15 +103,400 @@ resizeCanvas();
 
 
 /* =====================================================
-   SPECTRUM
-===================================================== */
+   AUDIO ENGINE
+   ===================================================== */
 
-const frequencyData =
-  new Uint8Array(1024);
+function createAudioEngine() {
+
+  if (audioReady) {
+    return true;
+  }
+
+  try {
+
+    audioContext = new (
+      window.AudioContext ||
+      window.webkitAudioContext
+    )();
 
 
-let colorOffset = 0;
+    /*
+      Audio dari <audio>
+      masuk ke Web Audio.
+    */
 
+    sourceNode =
+      audioContext.createMediaElementSource(audio);
+
+
+    /*
+      10 FILTER
+    */
+
+    let previousNode = sourceNode;
+
+
+    frequencies.forEach((frequency) => {
+
+      const filter =
+        audioContext.createBiquadFilter();
+
+      filter.type = "peaking";
+
+      filter.frequency.value = frequency;
+
+      filter.Q.value = 1.15;
+
+      filter.gain.value = 0;
+
+
+      previousNode.connect(filter);
+
+      previousNode = filter;
+
+      filters.push(filter);
+
+    });
+
+
+    /*
+      ANALYSER
+    */
+
+    analyser =
+      audioContext.createAnalyser();
+
+    analyser.fftSize = 2048;
+
+    analyser.smoothingTimeConstant = 0.82;
+
+
+    previousNode.connect(analyser);
+
+
+    /*
+      OUTPUT
+    */
+
+    analyser.connect(
+      audioContext.destination
+    );
+
+
+    audioReady = true;
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Audio engine error:",
+      error
+    );
+
+    statusText.textContent =
+      "Audio engine tidak tersedia";
+
+    return false;
+  }
+}
+
+
+/* =====================================================
+   PLAY
+   ===================================================== */
+
+playButton.addEventListener(
+  "click",
+  async () => {
+
+    /*
+      Pastikan URL sudah diisi.
+    */
+
+    if (
+      !STREAM_URL ||
+      STREAM_URL.includes(
+        "MASUKKAN_URL"
+      )
+    ) {
+
+      statusText.textContent =
+        "Isi URL stream RRI terlebih dahulu";
+
+      return;
+    }
+
+
+    try {
+
+      /*
+        AudioContext hanya dibuat setelah
+        pengguna menekan tombol.
+      */
+
+      if (!createAudioEngine()) {
+        return;
+      }
+
+
+      if (
+        audioContext.state === "suspended"
+      ) {
+
+        await audioContext.resume();
+
+      }
+
+
+      /*
+        Jangan set src berulang kali.
+      */
+
+      if (
+        audio.src !== STREAM_URL
+      ) {
+
+        audio.src = STREAM_URL;
+
+        audio.load();
+
+      }
+
+
+      if (audio.paused) {
+
+        statusText.textContent =
+          "Menghubungkan ke RRI...";
+
+        spectrumStatus.textContent =
+          "● CONNECTING";
+
+        await audio.play();
+
+      } else {
+
+        audio.pause();
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      statusText.textContent =
+        "Radio tidak dapat diputar";
+
+      spectrumStatus.textContent =
+        "● ERROR";
+    }
+
+  }
+);
+
+
+/* =====================================================
+   AUDIO EVENTS
+   ===================================================== */
+
+audio.addEventListener(
+  "playing",
+  () => {
+
+    playIcon.textContent = "❚❚";
+
+    playButton.classList.add(
+      "playing"
+    );
+
+    statusText.textContent =
+      "Sedang diputar";
+
+    spectrumStatus.textContent =
+      "● LIVE";
+  }
+);
+
+
+audio.addEventListener(
+  "pause",
+  () => {
+
+    playIcon.textContent = "▶";
+
+    playButton.classList.remove(
+      "playing"
+    );
+
+    statusText.textContent =
+      "Radio dijeda";
+
+    spectrumStatus.textContent =
+      "● PAUSED";
+  }
+);
+
+
+audio.addEventListener(
+  "waiting",
+  () => {
+
+    statusText.textContent =
+      "Buffering...";
+
+    spectrumStatus.textContent =
+      "● BUFFERING";
+  }
+);
+
+
+audio.addEventListener(
+  "error",
+  () => {
+
+    console.error(
+      "Audio error:",
+      audio.error
+    );
+
+    statusText.textContent =
+      "Stream RRI bermasalah";
+
+    spectrumStatus.textContent =
+      "● ERROR";
+  }
+);
+
+
+/* =====================================================
+   VOLUME
+   ===================================================== */
+
+audio.volume =
+  Number(volumeSlider.value) / 100;
+
+
+volumeSlider.addEventListener(
+  "input",
+  () => {
+
+    const value =
+      Number(volumeSlider.value);
+
+    audio.volume =
+      value / 100;
+
+    volumeValue.textContent =
+      value + "%";
+
+
+    if (value === 0) {
+
+      volumeIcon.textContent = "🔇";
+
+    } else if (value < 50) {
+
+      volumeIcon.textContent = "🔉";
+
+    } else {
+
+      volumeIcon.textContent = "🔊";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   EQUALIZER
+   ===================================================== */
+
+eqSliders.forEach(
+  (slider) => {
+
+    slider.addEventListener(
+      "input",
+      () => {
+
+        const index =
+          Number(slider.dataset.index);
+
+        const value =
+          Number(slider.value);
+
+
+        /*
+          Tampilkan angka.
+        */
+
+        slider.parentElement
+          .querySelector("b")
+          .textContent =
+            (value > 0 ? "+" : "") +
+            value +
+            " dB";
+
+
+        /*
+          Ubah filter jika Web Audio
+          sudah aktif.
+        */
+
+        if (
+          filters[index]
+        ) {
+
+          filters[index]
+            .gain.value = value;
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   RESET EQ
+   ===================================================== */
+
+resetEQ.addEventListener(
+  "click",
+  () => {
+
+    eqSliders.forEach(
+      (slider, index) => {
+
+        slider.value = 0;
+
+        slider.parentElement
+          .querySelector("b")
+          .textContent =
+            "0 dB";
+
+
+        if (
+          filters[index]
+        ) {
+
+          filters[index]
+            .gain.value = 0;
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   REAL-TIME SPECTRUM
+   ===================================================== */
 
 function drawSpectrum() {
 
@@ -493,14 +506,14 @@ function drawSpectrum() {
 
 
   const width =
-    canvas.clientWidth;
+    spectrumCanvas.clientWidth;
 
   const height =
-    canvas.clientHeight;
+    spectrumCanvas.clientHeight;
 
 
   /*
-    Background.
+    Background
   */
 
   canvasContext.clearRect(
@@ -511,125 +524,140 @@ function drawSpectrum() {
   );
 
 
-  canvasContext.fillStyle =
-    "rgba(2, 5, 18, .55)";
-
-  canvasContext.fillRect(
-    0,
-    0,
-    width,
-    height
-  );
-
-
   /*
-    Jika analyzer belum aktif,
-    spectrum dibuat benar-benar diam.
+    Grid
   */
 
-  if (!analyser) {
+  canvasContext.strokeStyle =
+    "rgba(255,255,255,.06)";
 
-    drawIdleSpectrum(
-      width,
-      height
+  canvasContext.lineWidth = 1;
+
+
+  for (
+    let y = 0;
+    y < height;
+    y += 40
+  ) {
+
+    canvasContext.beginPath();
+
+    canvasContext.moveTo(
+      0,
+      y
     );
 
-    return;
+    canvasContext.lineTo(
+      width,
+      y
+    );
+
+    canvasContext.stroke();
 
   }
 
 
+  /*
+    Kalau belum ada analyser,
+    spectrum benar-benar diam.
+  */
+
+  if (!analyser) {
+    return;
+  }
+
+
+  const bufferLength =
+    analyser.frequencyBinCount;
+
+  const data =
+    new Uint8Array(
+      bufferLength
+    );
+
+
   analyser.getByteFrequencyData(
-    frequencyData
+    data
   );
 
 
   /*
-    Jumlah bar.
+    BAR
   */
 
-  const barCount =
-    Math.min(
-      72,
-      Math.floor(width / 7)
+  const bars = 80;
+
+  const step =
+    Math.max(
+      1,
+      Math.floor(
+        bufferLength / bars
+      )
     );
 
-
-  const gap = 2;
-
   const barWidth =
-    (width -
-      (barCount - 1) * gap) /
-    barCount;
-
-
-  colorOffset += .8;
+    width / bars;
 
 
   for (
     let i = 0;
-    i < barCount;
+    i < bars;
     i++
   ) {
 
-    /*
-      Logarithmic mapping.
-      Ini membuat frekuensi rendah
-      dan tinggi terlihat lebih natural.
-    */
-
-    const normalized =
-      i / barCount;
-
     const index =
-      Math.floor(
-        Math.pow(normalized, 2.2) *
-        (frequencyData.length - 1)
+      i * step;
+
+
+    let sum = 0;
+
+    const count =
+      Math.min(
+        step,
+        bufferLength - index
       );
 
 
-    let value =
-      frequencyData[index] || 0;
+    for (
+      let j = 0;
+      j < count;
+      j++
+    ) {
 
+      sum += data[index + j];
 
-    /*
-      Kurangi sedikit noise kecil.
-      Jadi saat penyiar diam,
-      spektrum tidak menari berlebihan.
-    */
-
-    if (value < 12) {
-      value = 0;
     }
 
 
-    const normalizedValue =
-      value / 255;
+    const average =
+      count
+        ? sum / count
+        : 0;
 
 
     const barHeight =
-      normalizedValue *
+      (average / 255) *
       height *
-      .90;
+      0.9;
 
 
     const x =
-      i * (barWidth + gap);
+      i * barWidth;
+
 
     const y =
       height - barHeight;
 
 
     /*
-      Warna berubah perlahan
-      dari spectrum ke spectrum.
+      WARNA BERUBAH
+      mengikuti posisi
+      spectrum.
     */
 
     const hue =
-      (
-        colorOffset +
-        i * 5
-      ) % 360;
+      (i * 5 +
+       performance.now() * 0.025) % 360;
 
 
     const gradient =
@@ -643,17 +671,12 @@ function drawSpectrum() {
 
     gradient.addColorStop(
       0,
-      `hsla(${hue}, 100%, 70%, 1)`
-    );
-
-    gradient.addColorStop(
-      .5,
-      `hsla(${(hue + 45) % 360}, 100%, 60%, .95)`
+      `hsl(${hue},100%,65%)`
     );
 
     gradient.addColorStop(
       1,
-      `hsla(${(hue + 90) % 360}, 100%, 50%, .45)`
+      `hsl(${(hue + 80) % 360},100%,45%)`
     );
 
 
@@ -661,87 +684,13 @@ function drawSpectrum() {
       gradient;
 
 
-    /*
-      Glow.
-    */
-
-    canvasContext.shadowBlur = 10;
-
-    canvasContext.shadowColor =
-      `hsla(${hue}, 100%, 65%, .8)`;
-
-
-    /*
-      Bar.
-    */
-
-    canvasContext.beginPath();
-
-    canvasContext.roundRect(
-      x,
-      y,
-      barWidth,
-      Math.max(
-        barHeight,
-        value > 0 ? 2 : 0
-      ),
-      4
-    );
-
-    canvasContext.fill();
-
-
-    canvasContext.shadowBlur = 0;
-
-  }
-
-}
-
-
-/* =====================================================
-   IDLE SPECTRUM
-===================================================== */
-
-function drawIdleSpectrum(
-  width,
-  height
-) {
-
-  const barCount =
-    Math.min(
-      72,
-      Math.floor(width / 7)
-    );
-
-  const gap = 2;
-
-  const barWidth =
-    (width -
-      (barCount - 1) * gap) /
-    barCount;
-
-
-  for (
-    let i = 0;
-    i < barCount;
-    i++
-  ) {
-
-    const x =
-      i * (barWidth + gap);
-
-    const barHeight =
-      2;
-
-
-    canvasContext.fillStyle =
-      "rgba(90,120,255,.22)";
-
-
     canvasContext.fillRect(
-      x,
-      height - barHeight,
-      barWidth,
+      x + 1,
+      y,
+      Math.max(
+        1,
+        barWidth - 2
+      ),
       barHeight
     );
 
@@ -749,9 +698,5 @@ function drawIdleSpectrum(
 
 }
 
-
-/* =====================================================
-   START SPECTRUM
-===================================================== */
 
 drawSpectrum();
