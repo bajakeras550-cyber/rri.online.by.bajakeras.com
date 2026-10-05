@@ -11,150 +11,197 @@
 
 <body>
 
+  <!-- BINTANG -->
   <div class="stars"></div>
 
-  <main class="radio-container">
+  <main class="radio">
 
     <!-- HEADER -->
-    <header class="header">
-      <div class="brand">
-        <div class="brand-main">RRI<span>.Online</span></div>
-        <div class="brand-sub">By.Bajakeras</div>
+    <header>
+      <div class="logo">
+        RRI<span>.Online</span>
+      </div>
+
+      <div class="by">
+        By.Bajakeras
       </div>
     </header>
 
-    <!-- MOON -->
+
+    <!-- BULAN -->
     <div class="moon">
       <div class="moon-shadow"></div>
     </div>
 
-    <!-- PLAY AREA -->
-    <section class="player-section">
 
-      <div class="play-glow"></div>
+    <!-- PLAYER -->
+    <section class="player">
 
-      <button id="playButton" class="play-button" aria-label="Putar radio">
+      <div class="live">
+        <span></span>
+        LIVE RADIO
+      </div>
+
+      <h1>Pro 1 Mataram</h1>
+
+      <p class="location">
+        📍 Mataram, Nusa Tenggara Barat
+      </p>
+
+
+      <!-- PLAY BUTTON -->
+      <button
+        id="playButton"
+        class="play-button"
+        aria-label="Putar radio"
+      >
         <span id="playIcon">▶</span>
       </button>
 
+
       <div id="statusText" class="status">
-        Siap mendengarkan
+        Siap diputar
       </div>
 
     </section>
+
 
     <!-- SPECTRUM -->
-    <section class="spectrum-section">
+    <section class="panel">
 
-      <div class="section-title">
+      <div class="panel-title">
         <span>LIVE SPECTRUM</span>
-        <span id="liveIndicator" class="live-indicator">● LIVE</span>
+        <span id="spectrumStatus">● READY</span>
       </div>
 
-      <canvas id="spectrumCanvas"></canvas>
+      <canvas id="spectrum"></canvas>
 
     </section>
 
-    <!-- 10 BAND EQUALIZER -->
-    <section class="equalizer-section">
 
-      <div class="section-title">
+    <!-- EQUALIZER -->
+    <section class="panel">
+
+      <div class="panel-title">
         <span>10-BAND EQUALIZER</span>
-        <button id="resetEq" class="reset-button">RESET</button>
+
+        <button id="resetEQ" class="reset">
+          RESET
+        </button>
       </div>
 
-      <div class="equalizer">
+
+      <div class="eq">
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="31">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">31</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="0">
+          <span>31</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="62">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">62</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="1">
+          <span>62</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="125">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">125</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="2">
+          <span>125</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="250">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">250</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="3">
+          <span>250</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="500">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">500</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="4">
+          <span>500</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="1000">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">1K</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="5">
+          <span>1K</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="2000">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">2K</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="6">
+          <span>2K</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="4000">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">4K</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="7">
+          <span>4K</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="8000">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">8K</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="8">
+          <span>8K</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
         <div class="eq-band">
-          <input type="range" min="-12" max="12" value="0" class="eq-slider" data-frequency="16000">
-          <div class="eq-value">0 dB</div>
-          <div class="eq-frequency">16K</div>
+          <input type="range" min="-12" max="12" value="0" step="0.5" data-index="9">
+          <span>16K</span>
+          <small>Hz</small>
+          <b>0</b>
         </div>
 
       </div>
 
     </section>
+
 
     <!-- VOLUME -->
-    <section class="volume-section">
+    <section class="volume">
 
-      <div class="volume-icon" id="volumeIcon">🔊</div>
+      <span id="volumeIcon">🔊</span>
 
       <input
         id="volumeSlider"
         type="range"
         min="0"
-        max="1"
-        step="0.01"
-        value="1"
+        max="100"
+        value="85"
       >
 
-      <span id="volumeValue">100%</span>
+      <span id="volumeValue">85%</span>
 
     </section>
 
-    <audio id="radioAudio" preload="none"></audio>
 
+    <!-- AUDIO -->
+    <audio
+      id="radioAudio"
+      preload="none"
+      crossorigin="anonymous"
+    ></audio>
+
+
+    <!-- FOOTER -->
     <footer>
-      <div>RRI.Online By.Bajakeras</div>
+      <strong>RRI.Online By.Bajakeras</strong>
       <small>LIVE RADIO STREAM</small>
     </footer>
 
   </main>
+
 
   <script src="script.js"></script>
 
